@@ -1,15 +1,20 @@
-const http = require('http')
-
+const express = require('express')
+const app = express()
 
 const port = 8081;
-http.createServer( (req, res) => {
-    /* req es la solicitud HTTP, contiene headers, etc */
-    /* La response es la respuesta */
-    res.write('Hola Mundo');
 
-    res.end()
+//Servir Contenido estatico 
+
+app.use( express.static('templated-roadtrip') )
+
+app.get('/', (req, res) => {
+  res.send('Home Page')
 })
-.listen( port )
 
+app.get('*', (req, res) => {
+res.sendFile(__dirname +'/public/404.html')
+})
 
-console.log("Escuchando el puerto:", port);
+app.listen(port, () => {
+    console.log(`Running on http://localhost:${port}`)
+})
